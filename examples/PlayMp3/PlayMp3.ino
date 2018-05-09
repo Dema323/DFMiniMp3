@@ -10,6 +10,7 @@
 
 #include <SoftwareSerial.h>
 #include <DFMiniMp3.h>
+#include <HardwareSerial.h> // if u use esp32 otherwise comment this out
 
 // implement a notification class,
 // its member methods will get called 
@@ -57,7 +58,9 @@ public:
 // instance a DFMiniMp3 object, 
 // defined with the above notification class and the hardware serial class
 //
-DFMiniMp3<HardwareSerial, Mp3Notify> mp3(Serial1);
+HardwareSerial Serial2(2); // is needed as software serial does not work for esp32 atm
+
+DFMiniMp3<HardwareSerial, Mp3Notify> mp3(Serial2); // use Serial 2 for pins 16 and 17 on esp32
 
 // Some arduino boards only have one hardware serial port, so a software serial port is needed instead.
 // comment out the above definition and uncomment these lines
@@ -110,7 +113,7 @@ void loop()
   waitMilliseconds(5000);
   
   Serial.println("track 3");
-  mp3.playMp3FolderTrack(3); // sd:/mp3/0002.mp3
+  mp3.playMp3FolderTrack(3); // sd:/mp3/0003.mp3
   
   waitMilliseconds(5000); 
 }
